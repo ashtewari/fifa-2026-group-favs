@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07152f">
+  <title>FIFA World Cup 2026 — Selected Games</title>
+  <style>
+    :root {
+      --ink: #f6f8ff;
+      --muted: #aebbd1;
+      --panel: rgba(16, 31, 60, .78);
+      --panel-strong: #101f3c;
+      --line: rgba(255,255,255,.11);
+      --accent: #7be7d0;
+      --accent-2: #ffca5c;
+      --danger: #ff8692;
+      --bg: #061126;
+      --shadow: 0 24px 70px rgba(0,0,0,.28);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(49, 134, 255, .25), transparent 32rem),
+        radial-gradient(circle at 87% 5%, rgba(123, 231, 208, .18), transparent 28rem),
+        linear-gradient(150deg, #061126 0%, #091a34 50%, #07152f 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .16;
+      background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 54px 0 72px; position: relative; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(130deg, rgba(22, 45, 83, .9), rgba(8, 23, 50, .82));
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "⚽";
+      position: absolute;
+      right: -18px;
+      top: -70px;
+      font-size: clamp(180px, 28vw, 330px);
+      opacity: .055;
+      transform: rotate(-12deg);
+    }
+    .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: .16em; font-weight: 800; font-size: 12px; }
+    .eyebrow::before { content: ""; width: 34px; height: 2px; background: var(--accent); }
+    h1 { margin: 18px 0 12px; max-width: 820px; font-size: clamp(38px, 7vw, 78px); line-height: .96; letter-spacing: -.055em; }
+    .lede { max-width: 760px; margin: 0; color: var(--muted); font-size: clamp(16px, 2vw, 20px); line-height: 1.6; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .stat { border: 1px solid var(--line); background: rgba(255,255,255,.05); border-radius: 999px; padding: 9px 13px; color: #d8e2f4; font-size: 13px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      text-decoration: none; color: #061126; background: var(--accent); border: 0;
+      padding: 12px 17px; border-radius: 13px; font-weight: 800; cursor: pointer;
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .button.secondary { color: var(--ink); background: rgba(255,255,255,.08); border: 1px solid var(--line); }
+    .toolbar {
+      position: sticky; top: 10px; z-index: 10;
+      display: grid; grid-template-columns: 1fr auto auto; gap: 12px;
+      margin: 24px 0 18px; padding: 12px;
+      border: 1px solid var(--line); border-radius: 18px;
+      background: rgba(7, 19, 42, .86); backdrop-filter: blur(18px); box-shadow: 0 15px 35px rgba(0,0,0,.18);
+    }
+    .control {
+      width: 100%; color: var(--ink); background: rgba(255,255,255,.055);
+      border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; font: inherit;
+      outline: none;
+    }
+    .control:focus { border-color: rgba(123,231,208,.7); box-shadow: 0 0 0 3px rgba(123,231,208,.12); }
+    select.control { width: auto; min-width: 190px; }
+    .toggle { display: flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .toggle button { color: var(--muted); background: transparent; border: 0; padding: 0 12px; font: inherit; font-weight: 700; cursor: pointer; }
+    .toggle button.active { color: var(--ink); background: rgba(255,255,255,.1); }
+    .group-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px; }
+    .chip {
+      color: var(--muted); background: rgba(255,255,255,.045); border: 1px solid var(--line);
+      border-radius: 999px; padding: 8px 12px; font: inherit; font-size: 13px; font-weight: 750; cursor: pointer;
+    }
+    .chip.active { color: #061126; background: var(--accent-2); border-color: transparent; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin: 30px 2px 16px; }
+    .section-head h2 { margin: 0; font-size: 23px; letter-spacing: -.02em; }
+    .section-head span { color: var(--muted); font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .card {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--line); border-radius: 20px; padding: 19px;
+      background: linear-gradient(145deg, rgba(20, 39, 73, .88), rgba(12, 26, 52, .83));
+      box-shadow: 0 14px 30px rgba(0,0,0,.15);
+    }
+    .card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent); opacity: .85; }
+    .card.past { opacity: .66; }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .group { color: var(--accent); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+    .status { font-size: 12px; font-weight: 800; border-radius: 999px; padding: 5px 9px; color: var(--muted); background: rgba(255,255,255,.06); }
+    .status.today { color: #07152f; background: var(--accent-2); }
+    .status.live { color: #07152f; background: var(--danger); }
+    .teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; margin: 17px 0 14px; }
+    .team { display: flex; flex-direction: column; gap: 4px; font-weight: 850; font-size: 19px; }
+    .team:last-child { text-align: right; }
+    .flag { font-size: 30px; line-height: 1; }
+    .versus { color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing: .14em; }
+    .time { font-size: 16px; font-weight: 850; }
+    .original { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .note { color: #c4d0e3; line-height: 1.55; margin: 15px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; }
+    .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 48px; border: 1px dashed var(--line); border-radius: 20px; }
+    footer {
+      color: var(--muted); text-align: center; font-size: 13px; line-height: 1.6;
+      margin-top: 48px; padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    code { color: #dce8fa; background: rgba(255,255,255,.06); border-radius: 5px; padding: 1px 5px; font-size: .95em; }
+    .lede a, footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1.5px solid rgba(123, 231, 208, .35);
+      transition: color .16s ease, border-color .16s ease;
+    }
+    .lede a:hover, footer a:hover {
+      color: #a5efe0;
+      border-bottom-color: rgba(123, 231, 208, .75);
+    }
+    @media (max-width: 780px) {
+      .wrap { width: min(100% - 20px, 1180px); padding-top: 12px; }
+      .hero { border-radius: 22px; }
+      .toolbar { position: static; grid-template-columns: 1fr; }
+      select.control { width: 100%; }
+      .toggle { min-height: 44px; }
+      .toggle button { flex: 1; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Personal match watchlist</div>
+      <h1>World Cup 2026<br>selected games</h1>
+      <p class="lede">Twenty-one group-stage matchups, transcribed from the pages handwritten by haromene and shared on <a href="https://www.reddit.com/r/indiasocial/s/C9xBlHzgRB" target="_blank" rel="noopener">reddit</a>.</p>
+      <div class="stats">
+        <span class="stat">21 matches</span>
+        <span class="stat">Groups A, C–L</span>
+        <span class="stat">12–28 June 2026 IST</span>
+      </div>
+      <div class="actions">
+        <a class="button" href="fifa-2026-watchlist-groups.ics" download>⬇ Download .ics</a>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Match filters">
+      <input id="search" class="control" type="search" placeholder="Search a team or note…" aria-label="Search matches">
+      <select id="timezone" class="control" aria-label="Display timezone">
+        <option value="local">Browser local time</option>
+        <option value="Asia/Kolkata">India Standard Time</option>
+        <option value="America/New_York">U.S. Eastern Time</option>
+        <option value="UTC">UTC</option>
+      </select>
+      <div class="toggle" role="group" aria-label="Match status filter">
+        <button type="button" class="active" data-status="all">All</button>
+        <button type="button" data-status="upcoming">Upcoming</button>
+        <button type="button" data-status="past">Past</button>
+      </div>
+    </section>
+
+    <div id="groups" class="group-filter" aria-label="Group filter"></div>
+
+    <div class="section-head">
+      <h2>Match schedule</h2>
+      <span id="count"></span>
+    </div>
+    <section id="grid" class="grid" aria-live="polite"></section>
+
+    <footer>
+      This list of matches, kickoff times and comments are transcribed from the pages handwritten by haromene and shared on <a href="https://www.reddit.com/r/indiasocial/s/C9xBlHzgRB" target="_blank" rel="noopener">reddit</a>.
+    </footer>
+  </main>
+
+  <script>
+    const matches = [{"group":"A","home":"Mexico","away":"South Africa","start":"2026-06-12T00:30:00","note":"The inaugural game of the tournament, hosted at Estadio Azteca, where Diego Maradona scored his infamous ‘Hand of God’ goal.","home_flag":"🇲🇽","away_flag":"🇿🇦"},{"group":"C","home":"Brazil","away":"Morocco","start":"2026-06-14T03:30:00","note":"Neymar and gang vs the perennial dark horses and AFCON winners.","home_flag":"🇧🇷","away_flag":"🇲🇦"},{"group":"F","home":"Netherlands","away":"Japan","start":"2026-06-15T01:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇳🇱","away_flag":"🇯🇵"},{"group":"F","home":"Sweden","away":"Tunisia","start":"2026-06-15T07:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇸🇪","away_flag":"🇹🇳"},{"group":"G","home":"Belgium","away":"Egypt","start":"2026-06-16T00:30:00","note":"Mohamed Salah and Omar Marmoush against Romelu Lukaku, Kevin De Bruyne and Thibaut Courtois.","home_flag":"🇧🇪","away_flag":"🇪🇬"},{"group":"I","home":"France","away":"Senegal","start":"2026-06-17T00:30:00","note":"The game I am most excited for: Sadio Mané and company go up against Mbappé and his dictatorship.","home_flag":"🇫🇷","away_flag":"🇸🇳"},{"group":"J","home":"Argentina","away":"Algeria","start":"2026-06-17T06:30:00","note":"The battle of the old right-wingers: Lionel Messi vs Riyad Mahrez.","home_flag":"🇦🇷","away_flag":"🇩🇿"},{"group":"L","home":"England","away":"Croatia","start":"2026-06-18T01:30:00","note":"Croatia knocked out England in the 2018 World Cup semi-final — will the Englishmen get their revenge? Kane and company face a veteran Croatia team led by Luka Modrić.","home_flag":"🏴","away_flag":"🇭🇷"},{"group":"D","home":"USA","away":"Australia","start":"2026-06-20T00:30:00","note":"Allies in both world wars, but enemies on the pitch — the battle of the English-speaking countries.","home_flag":"🇺🇸","away_flag":"🇦🇺"},{"group":"C","home":"Scotland","away":"Morocco","start":"2026-06-20T03:30:00","note":"The underdogs toughing it out.","home_flag":"🏴","away_flag":"🇲🇦"},{"group":"F","home":"Netherlands","away":"Sweden","start":"2026-06-20T22:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇳🇱","away_flag":"🇸🇪"},{"group":"F","home":"Tunisia","away":"Japan","start":"2026-06-21T09:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇹🇳","away_flag":"🇯🇵"},{"group":"I","home":"Norway","away":"Senegal","start":"2026-06-23T05:30:00","note":"Sadio Mané vs Erling Haaland.","home_flag":"🇳🇴","away_flag":"🇸🇳"},{"group":"C","home":"Brazil","away":"Scotland","start":"2026-06-25T03:30:00","note":"Scott McTominay against the world.","home_flag":"🇧🇷","away_flag":"🏴"},{"group":"E","home":"Ecuador","away":"Germany","start":"2026-06-26T01:30:00","note":"Don’t write off Ecuador. Captain Moisés Caicedo goes up against former Chelsea teammate Kai Havertz.","home_flag":"🇪🇨","away_flag":"🇩🇪"},{"group":"F","home":"Japan","away":"Sweden","start":"2026-06-26T04:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇯🇵","away_flag":"🇸🇪"},{"group":"F","home":"Tunisia","away":"Netherlands","start":"2026-06-26T04:30:00","note":"Group of Death — every match has the potential to be a classic.","home_flag":"🇹🇳","away_flag":"🇳🇱"},{"group":"D","home":"USA","away":"Turkey","start":"2026-06-26T07:30:00","note":"The hosts face off against the 2018 and 2012 underdogs.","home_flag":"🇺🇸","away_flag":"🇹🇷"},{"group":"I","home":"Norway","away":"France","start":"2026-06-27T00:30:00","note":"Kylian Mbappé vs Erling Haaland.","home_flag":"🇳🇴","away_flag":"🇫🇷"},{"group":"H","home":"Uruguay","away":"Spain","start":"2026-06-27T05:30:00","note":"Two international giants have a massive clash: Lamine Yamal vs Federico Valverde.","home_flag":"🇺🇾","away_flag":"🇪🇸"},{"group":"K","home":"Colombia","away":"Portugal","start":"2026-06-28T05:00:00","note":"Cristiano goes up against a massive underdog led by World Cup legend James Rodríguez.","home_flag":"🇨🇴","away_flag":"🇵🇹"}];
+    const originalZone = 'Asia/Kolkata';
+    let activeGroup = 'All';
+    let activeStatus = 'all';
+
+    const grid = document.querySelector('#grid');
+    const groupsEl = document.querySelector('#groups');
+    const searchEl = document.querySelector('#search');
+    const timezoneEl = document.querySelector('#timezone');
+    const countEl = document.querySelector('#count');
+
+    const groupNames = ['All', ...new Set(matches.map(m => m.group))];
+    groupNames.forEach(group => {
+      const button = document.createElement('button');
+      button.className = 'chip' + (group === 'All' ? ' active' : '');
+      button.textContent = group === 'All' ? 'All groups' : `Group ${group}`;
+      button.addEventListener('click', () => {
+        activeGroup = group;
+        [...groupsEl.children].forEach(c => c.classList.toggle('active', c === button));
+        render();
+      });
+      groupsEl.appendChild(button);
+    });
+
+    document.querySelectorAll('[data-status]').forEach(button => {
+      button.addEventListener('click', () => {
+        activeStatus = button.dataset.status;
+        document.querySelectorAll('[data-status]').forEach(b => b.classList.toggle('active', b === button));
+        render();
+      });
+    });
+
+    searchEl.addEventListener('input', render);
+    timezoneEl.addEventListener('change', render);
+
+    function istDate(iso) {
+      // ISO strings are wall-clock times in IST. Convert them to a real instant.
+      return new Date(iso + '+05:30');
+    }
+
+    function selectedZone() {
+      return timezoneEl.value === 'local' ? Intl.DateTimeFormat().resolvedOptions().timeZone : timezoneEl.value;
+    }
+
+    function formatDate(date, zone) {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone: zone, weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+      }).format(date);
+    }
+
+    function formatTime(date, zone) {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone: zone, hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+      }).format(date);
+    }
+
+    function originalLabel(date) {
+      return `${formatDate(date, originalZone)} · ${formatTime(date, originalZone)}`;
+    }
+
+    function getState(date) {
+      const now = new Date();
+      const end = new Date(date.getTime() + 135 * 60 * 1000);
+      if (date <= now && now <= end) return 'live';
+      if (end < now) return 'past';
+      const sameDay = new Intl.DateTimeFormat('en-CA', {timeZone: selectedZone()}).format(date) ===
+                      new Intl.DateTimeFormat('en-CA', {timeZone: selectedZone()}).format(now);
+      return sameDay ? 'today' : 'upcoming';
+    }
+
+    function statusLabel(state, date) {
+      if (state === 'live') return 'In progress';
+      if (state === 'past') return 'Past';
+      if (state === 'today') return 'Today';
+      const days = Math.ceil((date - new Date()) / 86400000);
+      return days > 0 && days < 8 ? `In ${days} day${days === 1 ? '' : 's'}` : 'Upcoming';
+    }
+
+    function render() {
+      const query = searchEl.value.trim().toLowerCase();
+      const zone = selectedZone();
+      const filtered = matches.filter(match => {
+        const date = istDate(match.start);
+        const state = getState(date);
+        const groupOk = activeGroup === 'All' || match.group === activeGroup;
+        const statusOk = activeStatus === 'all' || (activeStatus === 'past' ? state === 'past' : state !== 'past');
+        const searchOk = !query || `${match.home} ${match.away} ${match.note} group ${match.group}`.toLowerCase().includes(query);
+        return groupOk && statusOk && searchOk;
+      });
+
+      countEl.textContent = `${filtered.length} of ${matches.length} matches`;
+      grid.innerHTML = '';
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty">No matches fit the current filters.</div>';
+        return;
+      }
+
+      filtered.forEach(match => {
+        const date = istDate(match.start);
+        const state = getState(date);
+        const card = document.createElement('article');
+        card.className = 'card' + (state === 'past' ? ' past' : '');
+        card.innerHTML = `
+          <div class="topline">
+            <span class="group">Group ${match.group}</span>
+            <span class="status ${state}">${statusLabel(state, date)}</span>
+          </div>
+          <div class="teams">
+            <div class="team"><span class="flag">${match.home_flag}</span><span>${match.home}</span></div>
+            <span class="versus">VS</span>
+            <div class="team"><span class="flag">${match.away_flag}</span><span>${match.away}</span></div>
+          </div>
+          <div class="time">${formatDate(date, zone)} · ${formatTime(date, zone)}</div>
+          <div class="original">Original: ${originalLabel(date)}</div>
+          <p class="note">${match.note}</p>`;
+        grid.appendChild(card);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
